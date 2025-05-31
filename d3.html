@@ -1,19 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
-  <meta charset="UTF-8" />
-  <title>引用网络图</title>
+  <meta charset="UTF-8">
+  <title>引用网络前n%可视化</title>
   <script src="https://d3js.org/d3.v7.min.js"></script>
-  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    body { font-family: sans-serif; }
+    .node { cursor: pointer; }
+  </style>
 </head>
 <body>
-  <h2>引用网络图 - 可交互控制</h2>
+  <h2>引用网络（显示被引用量最高前 n% 节点）</h2>
   <div>
-    缩放比例 <input id="zoomSlider" type="range" min="50" max="300" value="100"> <span id="zoomLabel">100%</span>
-    显示前 <input id="nodePercent" type="range" min="1" max="100" value="10"> <span id="percentLabel">10%</span> 节点；
-    边长 <input id="linkDistance" type="range" min="10" max="200" value="60"> <span id="distanceLabel">60</span>
+    显示前 <input id="nodePercent" type="range" min="1" max="100" value="10">
+    <span id="percentLabel">10%</span> 节点
   </div>
   <svg width="960" height="600"></svg>
   <script src="js/fig1.js"></script>
+  <h3>学科交叉引用热力图</h3>
+  <svg id="heatmap"></svg>
+  <script src="js/heat.js"></script>
 </body>
 </html>
