@@ -1,7 +1,7 @@
 // Set up SVG container and scales
 const margin = {top: 40, right: 40, bottom: 40, left: 60};
-const width = 800 - margin.left - margin.right;
-const height = 600 - margin.top - margin.bottom;
+const cdwidth = 800 - margin.left - margin.right;
+const cdheight = 600 - margin.top - margin.bottom;
 
 // Tooltip setup
 const tooltip = d3.select("body").append("div")
@@ -60,19 +60,19 @@ const tooltip = d3.select("body").append("div")
 function drawTimeline(data) {
     const svg = d3.select("#timeline")
         .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
+        .attr("width", cdwidth + margin.left + margin.right)
+        .attr("height", cdheight + margin.top + margin.bottom)
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
     
     // Set up scales
     const xScale = d3.scaleLinear()
         .domain(d3.extent(data, d => d.year))
-        .range([0, width]);
+        .range([0, cdwidth]);
         
     const yScale = d3.scaleLinear()
         .domain([-1, 1]) // CD index ranges from -1 to 1
-        .range([height, 0]);
+        .range([cdheight, 0]);
         
     const sizeScale = d3.scaleSqrt()
         .domain([0, d3.max(data, d => d.cited_by_count)])
@@ -80,7 +80,7 @@ function drawTimeline(data) {
         
     // Add axes
     svg.append("g")
-        .attr("transform", `translate(0,${height})`)
+        .attr("transform", `translate(0,${cdheight})`)
         .call(d3.axisBottom(xScale).tickFormat(d3.format("d")));
         
     svg.append("g")
@@ -88,15 +88,15 @@ function drawTimeline(data) {
         
     // Add axis labels
     svg.append("text")
-        .attr("x", width / 2)
-        .attr("y", height + margin.bottom - 10)
+        .attr("x", cdwidth / 2)
+        .attr("y", cdheight + margin.bottom - 10)
         .style("text-anchor", "middle")
         .text("Publication Year");
         
     svg.append("text")
         .attr("transform", "rotate(-90)")
         .attr("y", -margin.left + 15)
-        .attr("x", -height / 2)
+        .attr("x", -cdheight / 2)
         .style("text-anchor", "middle")
         .text("CD Index");
         
@@ -169,7 +169,7 @@ function drawIndexTrend(data) {
     // Create a separate SVG for the trend visualization
     const trendSvg = d3.select("#index-trend")
         .append("svg")
-        .attr("width", width + margin.left + margin.right)
+        .attr("width", cdwidth + margin.left + margin.right)
         .attr("height", 350)
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
@@ -183,7 +183,7 @@ function drawIndexTrend(data) {
     // Set up scales
     const xScale = d3.scaleLinear()
         .domain([-1, 1])
-        .range([0, width]);
+        .range([0, cdwidth]);
         
     const yScale = d3.scaleLinear()
         .domain([0, d3.max(bins, d => d.length)])
@@ -199,7 +199,7 @@ function drawIndexTrend(data) {
     
     // Add axis labels
     trendSvg.append("text")
-        .attr("x", width / 2)
+        .attr("x", cdwidth / 2)
         .attr("y", 280)
         .style("text-anchor", "middle")
         .text("CD Index");
