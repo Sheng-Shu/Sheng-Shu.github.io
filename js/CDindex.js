@@ -13,16 +13,17 @@ const tooltip = d3.select("body").append("div")
   .style("border", "1px solid #ccc")
   .style("border-radius", "5px");
 
-  function loadData() {
+function loadData() {
     d3.csv("data/output_1w_merged.csv").then(function(csv) {
         const parseYear = d3.timeParse("%Y");
 
         console.log(csv);
 
-        // 首先过滤掉cited_by_count为0的论文
+        // First filter: cited_by_count > 0 AND year >= 1990
         var filteredData = csv.filter(paper => {
             const citedCount = +paper.cited_by_count || 0;
-            return citedCount > 0;  // 只保留被引用次数大于0的论文
+            const year = Math.floor(parseFloat(paper.publication_year));
+            return citedCount > 0 && year >= 1970;  // Keep only papers with citations and published 1990 or later
         });
 
         var papers = filteredData.map(paper => {
@@ -91,14 +92,14 @@ function drawTimeline(data) {
         .attr("x", width / 2)
         .attr("y", height + margin.bottom - 10)
         .style("text-anchor", "middle")
-        .text("Publication Year");
+        .text("发表年份");
         
     svg.append("text")
         .attr("transform", "rotate(-90)")
         .attr("y", -margin.left + 15)
         .attr("x", -height / 2)
         .style("text-anchor", "middle")
-        .text("CD Index");
+        .text("CD指数");
         
 
     // Draw circles
@@ -128,11 +129,11 @@ function drawTimeline(data) {
                 .duration(200)
                 .style("opacity", .9);
             tooltip.html(`<strong>${d.title}</strong><br>
-                         Year: ${d.year}<br>
-                         CD Index: ${d.cdIndex.toFixed(3)}<br>
-                         Citations: ${d.cited_by_count}<br>
-                         Solo Citations (n_s): ${d.cdData.ns}<br>
-                         Paired Citations (n_p): ${d.cdData.np}`)
+                         发表年份: ${d.year}<br>
+                         CD指数: ${d.cdIndex.toFixed(3)}<br>
+                         被引用量: ${d.cited_by_count}<br>
+                         仅引用本论文: ${d.cdData.ns}<br>
+                         同时引用本论文及至少一篇本论文的参考文献: ${d.cdData.np}`)
                 .style("left", (event.pageX + 10) + "px")
                 .style("top", (event.pageY - 28) + "px");
         })
@@ -155,13 +156,13 @@ function showIndexSample(data) {
     const highlyConsolidating = data.filter(d => d.cdIndex < -0.75).length;
     
     sampleDiv.html(`
-        <h3>CD Index Distribution</h3>
-        <p>Total papers: ${data.length}</p>
-        <p><strong>Highly Disruptive (CD > 0.75):</strong> ${highlyDisruptive} (${(highlyDisruptive/data.length*100).toFixed(1)}%)</p>
-        <p><strong>Disruptive (0.25 < CD ≤ 0.75):</strong> ${disruptive} (${(disruptive/data.length*100).toFixed(1)}%)</p>
-        <p><strong>Neutral (-0.25 ≤ CD ≤ 0.25):</strong> ${neutral} (${(neutral/data.length*100).toFixed(1)}%)</p>
-        <p><strong>Consolidating (-0.75 < CD < -0.25):</strong> ${consolidating} (${(consolidating/data.length*100).toFixed(1)}%)</p>
-        <p><strong>Highly Consolidating (CD ≤ -0.75):</strong> ${highlyConsolidating} (${(highlyConsolidating/data.length*100).toFixed(1)}%)</p>
+        <h3>CD指数分布统计</h3>
+        <p>总论文数: ${data.length}</p>
+        <p><strong>强颠覆性 (CD > 0.75):</strong> ${highlyDisruptive} (${(highlyDisruptive/data.length*100).toFixed(1)}%)</p>
+        <p><strong>颠覆性 (0.25 < CD ≤ 0.75):</strong> ${disruptive} (${(disruptive/data.length*100).toFixed(1)}%)</p>
+        <p><strong>中立 (-0.25 ≤ CD ≤ 0.25):</strong> ${neutral} (${(neutral/data.length*100).toFixed(1)}%)</p>
+        <p><strong>延续性 (-0.75 < CD < -0.25):</strong> ${consolidating} (${(consolidating/data.length*100).toFixed(1)}%)</p>
+        <p><strong>强延续性 (CD ≤ -0.75):</strong> ${highlyConsolidating} (${(highlyConsolidating/data.length*100).toFixed(1)}%)</p>
     `);
 }
 
@@ -202,14 +203,14 @@ function drawIndexTrend(data) {
         .attr("x", width / 2)
         .attr("y", 280)
         .style("text-anchor", "middle")
-        .text("CD Index");
+        .text("CD指数");
         
     trendSvg.append("text")
         .attr("transform", "rotate(-90)")
         .attr("y", -40)
         .attr("x", -120)
         .style("text-anchor", "middle")
-        .text("Number of Papers");
+        .text("文献数量");
     
     // Draw bars 
     trendSvg.selectAll("rect")
