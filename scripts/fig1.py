@@ -1,7 +1,7 @@
 import pandas as pd
 import ast
 
-df = pd.read_csv('data/openalex-mena_merged.csv')
+df = pd.read_csv('data/output_1w_merged.csv')
 
 nodes = []
 edges = []
