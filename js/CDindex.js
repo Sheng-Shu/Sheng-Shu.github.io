@@ -1,7 +1,7 @@
 // Set up SVG container and scales
 const margin = {top: 40, right: 40, bottom: 40, left: 60};
-const cdwidth = 800 - margin.left - margin.right;
-const cdheight = 600 - margin.top - margin.bottom;
+const width = 800 - margin.left - margin.right;
+const height = 600 - margin.top - margin.bottom;
 
 // Tooltip setup
 const tooltip = d3.select("body").append("div")
@@ -12,8 +12,8 @@ const tooltip = d3.select("body").append("div")
   .style("padding", "5px")
   .style("border", "1px solid #ccc")
   .style("border-radius", "5px");
-
-function loadData() {
+/* 
+  function loadData() {
     d3.csv("data/output_1w_merged.csv").then(function(csv) {
         const parseYear = d3.timeParse("%Y");
 
@@ -50,30 +50,91 @@ function loadData() {
         });
 
         const papersWithCD = calculateAllCDIndices(papers);
+        
+        // 导出数据为CSV
+        exportToCSV(papersWithCD);
+        
+
+        console.log(papersWithCD);
+    });
+}
+
+// 导出数据为CSV的函数
+function exportToCSV(data) {
+    // 准备CSV内容
+    const csvContent = [
+        // 表头
+        ['id', 'title', 'year', 'cited_by_count', 'cdIndex', 'ns', 'np', 'concepts_names'].join(','),
+        // 数据行
+        ...data.map(item => [
+            `"${item.id}"`,
+            `"${item.title.replace(/"/g, '""')}"`,
+            item.year,
+            item.cited_by_count,
+            item.cdIndex,
+            item.cdData.ns,
+            item.cdData.np,
+            `"${item.concepts_names}"`
+        ].join(','))
+    ].join('\n');
+    
+    // 创建Blob对象
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    
+    // 创建下载链接
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'papers_with_cd_index.csv');
+    link.style.visibility = 'hidden';
+    
+    // 添加到文档并触发点击
+    document.body.appendChild(link);
+    link.click();
+    
+    // 清理
+    document.body.removeChild(link);
+} */
+
+function loadPrecomputedData() {
+    d3.csv("data/papers_with_cd_index.csv").then(function(csv) {
+        const papersWithCD = csv.map(paper => {
+            return {
+                id: paper.id,
+                title: paper.title,
+                year: +paper.year,
+                cited_by_count: +paper.cited_by_count,
+                cdIndex: +paper.cdIndex,
+                cdData: {
+                    ns: +paper.ns,
+                    np: +paper.np
+                },
+                concepts_names: paper.concepts_names
+            };
+        });
+
         drawTimeline(papersWithCD);
         showIndexSample(papersWithCD);
         drawIndexTrend(papersWithCD);
-
-        console.log(papersWithCD);
     });
 }
 
 function drawTimeline(data) {
     const svg = d3.select("#timeline")
         .append("svg")
-        .attr("width", cdwidth + margin.left + margin.right)
-        .attr("height", cdheight + margin.top + margin.bottom)
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
     
     // Set up scales
     const xScale = d3.scaleLinear()
         .domain(d3.extent(data, d => d.year))
-        .range([0, cdwidth]);
+        .range([0, width]);
         
     const yScale = d3.scaleLinear()
         .domain([-1, 1]) // CD index ranges from -1 to 1
-        .range([cdheight, 0]);
+        .range([height, 0]);
         
     const sizeScale = d3.scaleSqrt()
         .domain([0, d3.max(data, d => d.cited_by_count)])
@@ -81,7 +142,7 @@ function drawTimeline(data) {
         
     // Add axes
     svg.append("g")
-        .attr("transform", `translate(0,${cdheight})`)
+        .attr("transform", `translate(0,${height})`)
         .call(d3.axisBottom(xScale).tickFormat(d3.format("d")));
         
     svg.append("g")
@@ -89,15 +150,15 @@ function drawTimeline(data) {
         
     // Add axis labels
     svg.append("text")
-        .attr("x", cdwidth / 2)
-        .attr("y", cdheight + margin.bottom - 10)
+        .attr("x", width / 2)
+        .attr("y", height + margin.bottom - 10)
         .style("text-anchor", "middle")
         .text("发表年份");
         
     svg.append("text")
         .attr("transform", "rotate(-90)")
         .attr("y", -margin.left + 15)
-        .attr("x", -cdheight / 2)
+        .attr("x", -height / 2)
         .style("text-anchor", "middle")
         .text("CD指数");
         
@@ -170,7 +231,7 @@ function drawIndexTrend(data) {
     // Create a separate SVG for the trend visualization
     const trendSvg = d3.select("#index-trend")
         .append("svg")
-        .attr("width", cdwidth + margin.left + margin.right)
+        .attr("width", width + margin.left + margin.right)
         .attr("height", 350)
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
@@ -184,7 +245,7 @@ function drawIndexTrend(data) {
     // Set up scales
     const xScale = d3.scaleLinear()
         .domain([-1, 1])
-        .range([0, cdwidth]);
+        .range([0, width]);
         
     const yScale = d3.scaleLinear()
         .domain([0, d3.max(bins, d => d.length)])
@@ -200,7 +261,7 @@ function drawIndexTrend(data) {
     
     // Add axis labels
     trendSvg.append("text")
-        .attr("x", cdwidth / 2)
+        .attr("x", width / 2)
         .attr("y", 280)
         .style("text-anchor", "middle")
         .text("CD指数");
@@ -281,4 +342,6 @@ function calculateAllCDIndices(papers) {
 }
 
 // Initialize the visualization
-loadData();
+//loadData();
+
+loadPrecomputedData();
