@@ -4,9 +4,9 @@
     const cdwidth = 800 - margin.left - margin.right;
     const cdheight = 600 - margin.top - margin.bottom;
 
-    // Tooltip setup
-    const tooltip = d3.select("body").append("div")
-    .attr("class", "tooltip")
+    // tooltip_cd setup
+    const tooltip_cd = d3.select("body").append("div")
+    .attr("class", "tooltip_cd")
     .style("opacity", 0)
     .style("position", "absolute")
     .style("background", "white")
@@ -187,10 +187,10 @@
             })
             .attr("stroke-cdwidth", 2)
             .on("mouseover", function(event, d) {
-                tooltip.transition()
+                tooltip_cd.transition()
                     .duration(200)
                     .style("opacity", .9);
-                tooltip.html(`<strong>${d.title}</strong><br>
+                tooltip_cd.html(`<strong>${d.title}</strong><br>
                             发表年份: ${d.year}<br>
                             CD指数: ${d.cdIndex.toFixed(3)}<br>
                             被引用量: ${d.cited_by_count}<br>
@@ -200,7 +200,7 @@
                     .style("top", (event.pageY - 28) + "px");
             })
             .on("mouseout", function() {
-                tooltip.transition()
+                tooltip_cd.transition()
                     .duration(500)
                     .style("opacity", 0);
             });

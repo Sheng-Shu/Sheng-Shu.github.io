@@ -96,8 +96,8 @@ console.log("heat.js loaded!");
       .domain([0, d3.max(fullData, d => d.value)])
       .interpolator(d3.interpolateYlOrRd);
 
-    const tooltip = d3.select("body").append("div")
-      .attr("class", "tooltip")
+    const tooltip_heat = d3.select("body").append("div")
+      .attr("class", "tooltip_heat")
       .style("position", "absolute")
       .style("background", "#fff")
       .style("padding", "8px 14px")
@@ -138,14 +138,14 @@ console.log("heat.js loaded!");
         .attr("stroke", "#fff")
         .on("mouseover", function(event, d) {
           d3.select(this).attr("stroke", "#333").attr("stroke-width", 2);
-          tooltip.style("display", "block")
+          tooltip_heat.style("display", "block")
             .html(`<b>引用自:</b> ${d.row}<br/><b>被引用:</b> ${d.col}<br/><b>引用数:</b> ${d.value}`)
             .style("left", (event.pageX + 15) + "px")
             .style("top", (event.pageY - 20) + "px");
         })
         .on("mouseout", function() {
           d3.select(this).attr("stroke", "#fff").attr("stroke-width", 1);
-          tooltip.style("display", "none");
+          tooltip_heat.style("display", "none");
         });
 
       g.selectAll("text.value")
