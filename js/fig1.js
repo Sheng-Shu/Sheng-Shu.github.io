@@ -1,3 +1,5 @@
+console.log("fig1.js loaded");
+
 const width = 960;
 const height = 600;
 
@@ -6,6 +8,26 @@ const container = svg.append("g");
 svg.call(d3.zoom().on("zoom", (event) => {
   container.attr("transform", event.transform);
 }));
+
+let tooltip_force = d3.select("body").select("div.tooltip_force");
+
+if (tooltip_force.empty()) {
+  tooltip_force = d3.select("body").append("div")
+    .attr("class", "tooltip_force")
+    .style("position", "absolute")
+    .style("background", "#fff")
+    .style("padding", "8px 14px")
+    .style("border", "1px solid #ccc")
+    .style("border-radius", "6px")
+    .style("font-size", "13px")
+    .style("pointer-events", "none")
+    .style("display", "none")
+    .style("z-index", 99);
+}
+
+// 确保它始终拥有 CSS 样式（而不是靠 JS 写 inline）
+tooltip_force.classed("tooltip_force", true); // 强制附着 class
+
 
 const customColors = [
   " #71b7ed", " #f2a7da", " #b8aeeb", " #88d8db", " #e66d50",
@@ -98,7 +120,7 @@ Promise.all([
 
     const simulation = d3.forceSimulation(nodes)
       .force("link", d3.forceLink(links).id(d => d.id).distance(60))
-      .force("charge", d3.forceManyBody().strength(-100))
+      .force("charge", d3.forceManyBody().strength(-150))
       .force("center", d3.forceCenter(width / 2, height / 2))
       .alphaDecay(0.1);
 
@@ -137,11 +159,25 @@ Promise.all([
             d.fx = null; d.fy = null;
           })
       )
-      .on("mouseover", handleMouseOver)
-      .on("mouseout", handleMouseOut);
+      .on("mouseover", function(event, d) {
+        d3.select(this)
+          .attr("stroke", "black")
+          .attr("stroke-width", 2);
 
-    node.append("title")
-      .text(d => `${d.title}\n引用次数: ${d.cited_by_count}\n分类: ${d.colorKey}`);
+        tooltip_force
+          .style("display", "block")
+          .html(`标题：${d.title}<br>引用次数：${d.cited_by_count}<br>分类：${d.colorKey}`)
+          .style("left", (event.pageX + 10) + "px")
+          .style("top", (event.pageY - 20) + "px");
+      })
+      .on("mouseout", function() {
+        d3.select(this)
+          .attr("stroke", "#999")
+          .attr("stroke-width", 1);
+
+        tooltip_force.style("display", "none");
+      });
+
 
     simulation.on("tick", () => {
       link
@@ -159,32 +195,8 @@ Promise.all([
       simulation.stop();
     }, 3000);
 
-    function handleMouseOver(event, d) {
-      // 高亮当前节点
-      d3.select(this)
-        .attr("stroke", "#000")
-        .attr("stroke-width", 2)
-        .raise(); // 提前到最上层
 
-      // 高亮连接的边
-      link
-        .attr("stroke", l =>
-          l.source.id === d.id || l.target.id === d.id ? "#666" : "#aaa"
-        )
-        .attr("opacity", l =>
-          l.source.id === d.id || l.target.id === d.id ? 0.8 : 0.15
-        );
-    }
 
-    function handleMouseOut(event, d) {
-      d3.select(this)
-        .attr("stroke", "#999")
-        .attr("stroke-width", 1);
-
-      link
-        .attr("stroke", "#aaa")
-        .attr("opacity", 0.15);
-    }
 
     const legendDiv = d3.select("#legend-container");
     legendDiv.html("");
