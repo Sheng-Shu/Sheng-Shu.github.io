@@ -1,35 +1,224 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
-		<meta charset="UTF-8">
-		<title>颠覆性</title>
-        <script src="https://d3js.org/d3.v7.min.js"></script>
-		<!-- <link rel="stylesheet" href="css/style.css"> -->
-        <style>
-            body { font-family: sans-serif; }
-            .node { cursor: pointer; }
-          </style>
+  <meta charset="UTF-8">
+  <title>引用网络与可视化分析</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f7f9fb;
+      color: #333;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      margin-bottom: 40px;
+    }
+
+    .svg-fixed {
+      display: block;
+      margin: 0 auto;
+      max-width: 100%;
+      height: auto;
+      overflow: hidden;
+      background: #f9fbfe;
+      border-radius: 6px;
+    }
+
+    h1, h2, h3 {
+      text-align: center;
+      color: #222;
+    }
+
+    .control-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    select, input[type="range"], button {
+      font-size: 14px;
+      padding: 6px 10px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+
+    #filter-box {
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #filter-box > div {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    a {
+      display: block;
+      text-align: center;
+      margin-top: 40px;
+      color: #3366cc;
+      font-size: 15px;
+    }
+
+    .tooltip {
+      position: absolute;
+      background: #fff;
+      padding: 8px 14px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 13px;
+      pointer-events: none;
+      display: none;
+      z-index: 99;
+    }
+
+    .svg-flexible-wrapper {
+      display: flex;
+      justify-content: center;
+    }
+
+    .svg-flexible {
+      max-width: 100%;
+      overflow: visible;
+    }
+
+    .section-description1, .section-description2 {
+      max-width: 800px;
+      margin: 0 auto 20px;
+      text-align: center;
+      font-size: 15px;
+      color: #555;
+      line-height: 1.6;
+      padding: 0 10px;
+    }
+
+    #legend-container {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .node {
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
 
-	<div id="timeline" class="container">
-        <h1>时间线+引用</h1>
+  <!-- 🟦 力导向图 -->
+  <div class="container">
+    <h2>论文引用关系力导向图</h2>
+    <div class="section-description1">
+      1. 中心密集、外围稀疏：经典“核心-边缘”结构。<br>
+      2. 颜色分布：代表学科交叉情况。<br>
+      3. “桥梁文献”：起到跨领域连接作用。
     </div>
 
-    <div id="index-sample" class="container">
-        <h1></h1>
+    <div class="control-row">
+      显示前 
+      <input id="nodePercent" type="range" min="1" max="100" value="10">
+      <span id="percentLabel">10%</span> 节点
     </div>
 
-    <div id="index-trend" class="container">
-        <h1>CD指数分布</h1>
+    <svg id="network" class="svg-fixed" width="1000" height="600"></svg>
+
+    <div class="control-row">
+      <label for="colorCategory">颜色分类字段：</label>
+      <select id="colorCategory">
+        <option value="field">field</option>
+        <option value="domain">domain</option>
+      </select>
     </div>
 
-	<!-- Load JS libraries
-	<script src="js/d3.js"></script> -->
+    <div id="legend-container"></div>
+    <script src="js/fig1.js"></script>
+  </div>
 
-	<!-- My implementation -->
-	<script src="js/CDindex.js"></script>
+  <!-- 🟨 热力图 -->
+  <div class="container">
+    <h3>学科交叉热矩阵图</h3>
+    <div class="section-description2">
+      横纵轴为学科分类，颜色强度代表交叉频率。
+    </div>
 
-	<a href="d3.html">回到主页</a>
+    <div class="control-row">
+      <label for="category">选择分类字段：</label>
+      <select id="category">
+        <option value="field">field</option>
+        <option value="domain">domain</option>
+      </select>
+    </div>
+
+    <div id="filter-box"></div>
+    <div class="svg-flexible-wrapper">
+      <svg id="heatmap" class="svg-flexible" width="1000" height="1000"></svg>
+    </div>
+    <script src="js/heat.js"></script>
+  </div>
+
+  <!-- 🟥 CD指数和时间线 -->
+  <div class="container">
+    <h2>时间线与CD指数分布</h2>
+
+    <div id="timeline">
+      <h3>时间线 + 引用</h3>
+    </div>
+
+    <div id="index-sample">
+      <h3>示例引用</h3>
+    </div>
+
+    <div id="index-trend">
+      <h3>CD指数分布</h3>
+    </div>
+
+    <script src="js/CDindex.js"></script>
+  </div>
+
+  <!-- 🟩 预告板块 -->
+  <div class="container section-description2">
+    <strong>TODO:</strong> 引用数深度和广度的散点图，随时间变化，按 domain/field 着色。
+  </div>
+
+  <!-- 🔁 状态记忆控制 -->
+  <script>
+    const savedColor = localStorage.getItem("color-category");
+    if (savedColor) {
+      document.getElementById("colorCategory").value = savedColor;
+    }
+
+    const savedCategory = localStorage.getItem("selected-category");
+    if (savedCategory) {
+      document.getElementById("category").value = savedCategory;
+    }
+
+    document.getElementById("category").addEventListener("change", (e) => {
+      localStorage.setItem("selected-category", e.target.value);
+      location.reload();
+    });
+
+    document.getElementById("colorCategory").addEventListener("change", (e) => {
+      localStorage.setItem("color-category", e.target.value);
+      location.reload();
+    });
+  </script>
+
 </body>
 </html>

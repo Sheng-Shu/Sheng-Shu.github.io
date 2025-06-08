@@ -14,3 +14,28 @@ svg {
   max-width: 100%;
   height: auto;
 }
+
+#timeline svg,
+#index-trend svg,
+.svg-fixed,
+.svg-flexible {
+  display: block;
+  margin: 0 auto;
+}
+.tooltip {
+  position: absolute;
+  background: #ffffff;
+  color: #333;
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-size: 13px;
+  line-height: 1.6;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 99;
+  transition: opacity 0.2s ease;
+  max-width: 300px;
+}
+
