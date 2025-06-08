@@ -27,7 +27,7 @@ console.log("heat.js loaded!");
 
 
   Promise.all([
-    d3.csv("data/output_1w_merged.csv", d => {
+    d3.csv("data/nodes_cleaned.csv", d => {
       let field = "Unknown", domain = "Unknown";
       try {
         if (d.topics && d.topics.startsWith("[")) {
