@@ -6,6 +6,9 @@
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <link rel="stylesheet" href="css/style.css">
   <style>
+    html {
+      scroll-behavior: smooth;
+    }
     body {
       font-family: sans-serif;
       margin: 0;
@@ -201,8 +204,8 @@
           </select>
         </div>
         <div id="filter-box"></div>
-        <div class="svg-flexible-wrapper">
-          <svg id="heatmap" class="svg-flexible" width="1000" height="1600"></svg>
+        <div class="svg-scroll-wrapper">
+            <svg id="heatmap" class="svg-flexible" height="1600"></svg>
         </div>
         <script src="js/heat.js"></script>
       </div>

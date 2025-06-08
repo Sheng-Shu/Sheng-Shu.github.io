@@ -22,3 +22,12 @@ svg {
   display: block;
   margin: 0 auto;
 }
+
+.svg-scroll-wrapper {
+  width: 100%;
+  overflow-x: auto;     /* 👉 出现横向滚动条 */
+  overflow-y: visible;
+  display: flex;
+  justify-content: center;  /* 👉 居中 SVG */
+  padding-bottom: 20px;
+}
