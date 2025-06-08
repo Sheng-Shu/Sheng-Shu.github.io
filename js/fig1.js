@@ -164,6 +164,30 @@ Promise.all([
           .attr("stroke", "black")
           .attr("stroke-width", 2);
 
+        // 高亮连接的边
+        link
+          .attr("stroke", l =>
+            l.source.id === d.id || l.target.id === d.id ? "#f66" : "#aaa"
+          )
+          .attr("stroke-width", l =>
+            l.source.id === d.id || l.target.id === d.id ? 2.5 : 1
+          )
+          .attr("opacity", l =>
+            l.source.id === d.id || l.target.id === d.id ? 0.8 : 0.05
+          );
+
+        // 高亮连接的点，非连接点降低透明度
+        node
+          .attr("opacity", n =>
+            n.id === d.id ||
+            links.some(l =>
+              (l.source.id === d.id && l.target.id === n.id) ||
+              (l.target.id === d.id && l.source.id === n.id)
+            )
+              ? 1.0
+              : 0.2
+          );
+
         tooltip_force
           .style("display", "block")
           .html(`标题：${d.title}<br>引用次数：${d.cited_by_count}<br>分类：${d.colorKey}`)
@@ -175,8 +199,18 @@ Promise.all([
           .attr("stroke", "#999")
           .attr("stroke-width", 1);
 
+        link
+          .attr("stroke", "#aaa")
+          .attr("stroke-width", 1)
+          .attr("opacity", 0.15);
+
+        node
+          .attr("opacity", 1)
+          .attr("fill", d => color(d.colorKey));
+
         tooltip_force.style("display", "none");
       });
+
 
 
     simulation.on("tick", () => {
