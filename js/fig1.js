@@ -160,46 +160,31 @@ Promise.all([
     }, 3000);
 
     function handleMouseOver(event, d) {
-      // 找到与当前节点相连的所有节点和边
-      const neighborIds = new Set();
-      const connectedLinks = links.filter(l => {
-        const connected = l.source.id === d.id || l.target.id === d.id;
-        if (connected) {
-          neighborIds.add(l.source.id);
-          neighborIds.add(l.target.id);
-        }
-        return connected;
-      });
+      // 高亮当前节点
+      d3.select(this)
+        .attr("stroke", "#000")
+        .attr("stroke-width", 2)
+        .raise(); // 提前到最上层
 
-      // 所有节点变暗，只有自己和邻居保留正常不透明度
-      node
-        .attr("fill-opacity", n => (neighborIds.has(n.id) ? 1 : 0.1))
-        .attr("stroke-opacity", n => (neighborIds.has(n.id) ? 1 : 0.1));
-
+      // 高亮连接的边
       link
-        .attr("opacity", l => (
-          l.source.id === d.id || l.target.id === d.id ? 0.9 : 0.05
-        ))
         .attr("stroke", l =>
-          l.source.id === d.id || l.target.id === d.id ? "#333" : "#aaa"
+          l.source.id === d.id || l.target.id === d.id ? "#666" : "#aaa"
         )
-        .attr("stroke-width", l =>
-          l.source.id === d.id || l.target.id === d.id ? 2 : 1
+        .attr("opacity", l =>
+          l.source.id === d.id || l.target.id === d.id ? 0.8 : 0.15
         );
     }
 
-    function handleMouseOut() {
-      // 恢复默认样式
-      node
-        .attr("fill-opacity", 1)
-        .attr("stroke-opacity", 1);
+    function handleMouseOut(event, d) {
+      d3.select(this)
+        .attr("stroke", "#999")
+        .attr("stroke-width", 1);
 
       link
-        .attr("opacity", 0.15)
         .attr("stroke", "#aaa")
-        .attr("stroke-width", 1);
+        .attr("opacity", 0.15);
     }
-
 
     const legendDiv = d3.select("#legend-container");
     legendDiv.html("");
