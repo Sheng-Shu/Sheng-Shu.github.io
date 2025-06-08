@@ -81,7 +81,7 @@ console.log("heat.js loaded!");
     const fullData = getHeatmapData(fieldArray, matrix);
 
     const width = fieldArray.length * cellSize + margin.left + margin.right + legendPadding;
-    const height = fieldArray.length * cellSize + margin.top + margin.bottom;
+    const height = fieldArray.length * (cellSize+20) + margin.top + margin.bottom;
     console.log("heatmap SVG height:", height);
 
 
