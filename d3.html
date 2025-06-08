@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="zh">
-
 <head>
   <meta charset="UTF-8">
   <title>引用网络与可视化分析</title>
@@ -10,15 +9,59 @@
     body {
       font-family: sans-serif;
       margin: 0;
-      padding: 20px;
       background-color: #f7f9fb;
       color: #333;
-      overflow-x: hidden;
     }
-   
+
+    .site-header {
+      background-color: #002b45;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .main-layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .side-nav {
+      width: 18%;
+      padding: 30px 20px;
+      background-color: #f0f4f8;
+      box-shadow: 2px 0 6px rgba(0, 0, 0, 0.05);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+    }
+
+    .side-nav ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .side-nav li {
+      margin-bottom: 16px;
+    }
+
+    .side-nav a {
+      text-decoration: none;
+      font-size: 16px;
+      color: #336699;
+    }
+
+    .side-nav a:hover {
+      text-decoration: underline;
+    }
+
+    .content-area {
+      width: 82%;
+      padding: 30px;
+    }
+
     .container {
-      max-width: 1200px;
-      margin: 0 auto;
       background: white;
       padding: 30px;
       border-radius: 8px;
@@ -36,9 +79,14 @@
       border-radius: 6px;
     }
 
-    h1, h2, h3 {
-      text-align: center;
-      color: #222;
+    .svg-flexible-wrapper {
+      display: flex;
+      justify-content: center;
+    }
+
+    .svg-flexible {
+      max-width: 100%;
+      overflow: visible;
     }
 
     .control-row {
@@ -72,24 +120,6 @@
       gap: 10px;
     }
 
-    a {
-      display: block;
-      text-align: center;
-      margin-top: 40px;
-      color: #3366cc;
-      font-size: 15px;
-    }
-
-    .svg-flexible-wrapper {
-      display: flex;
-      justify-content: center;
-    }
-
-    .svg-flexible {
-      max-width: 100%;
-      overflow: visible;
-    }
-
     .section-description1, .section-description2 {
       max-width: 800px;
       margin: 0 auto 20px;
@@ -105,95 +135,96 @@
       margin: 20px 0;
     }
 
+    h1, h2, h3 {
+      text-align: center;
+      color: #222;
+    }
+
     .node {
       cursor: pointer;
     }
   </style>
 </head>
 <body>
+  <header class="site-header">
+    引用网络与可视化分析
+  </header>
 
-  <!-- 🟦 力导向图 -->
-  <div class="container">
-    <h2>论文引用关系力导向图</h2>
-    <div class="section-description1">
-      1. 中心密集、外围稀疏：经典“核心-边缘”结构。<br>
-      2. 颜色分布：代表学科交叉情况。<br>
-      3. “桥梁文献”：起到跨领域连接作用。
-    </div>
+  <div class="main-layout">
+    <!-- 左侧导航 -->
+    <nav class="side-nav">
+      <ul>
+        <li><a href="#network-section">📘 力导向图</a></li>
+        <li><a href="#heatmap-section">📗 热力图</a></li>
+        <li><a href="#cd-section">📙 时间线与CD指数</a></li>
+      </ul>
+    </nav>
 
-    <div class="control-row">
-      显示前 
-      <input id="nodePercent" type="range" min="1" max="100" value="10">
-      <span id="percentLabel">10%</span> 节点
-    </div>
+    <!-- 右侧内容 -->
+    <main class="content-area">
+      <!-- 力导向图 -->
+      <div class="container" id="network-section">
+        <h2>论文引用关系力导向图</h2>
+        <div class="section-description1">
+          1. 中心密集、外围稀疏：经典“核心-边缘”结构。<br>
+          2. 颜色分布：代表学科交叉情况。<br>
+          3. “桥梁文献”：起到跨领域连接作用。
+        </div>
+        <div class="control-row">
+          显示前 
+          <input id="nodePercent" type="range" min="1" max="100" value="10">
+          <span id="percentLabel">10%</span> 节点
+        </div>
+        <svg id="network" class="svg-fixed" width="1000" height="600"></svg>
+        <div class="control-row">
+          <label for="colorCategory">颜色分类字段：</label>
+          <select id="colorCategory">
+            <option value="field">field</option>
+            <option value="domain">domain</option>
+          </select>
+        </div>
+        <div id="legend-container"></div>
+        <script src="js/fig1.js"></script>
+      </div>
 
-    <svg id="network" class="svg-fixed" width="1000" height="600"></svg>
+      <!-- 热力图 -->
+      <div class="container" id="heatmap-section">
+        <h3>学科交叉热矩阵图</h3>
+        <div class="section-description2">
+          横纵轴为学科分类，颜色强度代表交叉频率。
+        </div>
+        <div class="control-row">
+          <label for="category">选择分类字段：</label>
+          <select id="category">
+            <option value="field">field</option>
+            <option value="domain">domain</option>
+          </select>
+        </div>
+        <div id="filter-box"></div>
+        <div class="svg-flexible-wrapper">
+          <svg id="heatmap" class="svg-flexible" width="1000" height="1600"></svg>
+        </div>
+        <script src="js/heat.js"></script>
+      </div>
 
-    <div class="control-row">
-      <label for="colorCategory">颜色分类字段：</label>
-      <select id="colorCategory">
-        <option value="field">field</option>
-        <option value="domain">domain</option>
-      </select>
-    </div>
-
-    <div id="legend-container"></div>
-    <script src="js/fig1.js"></script>
+      <!-- CD 指数与时间线 -->
+      <div class="container" id="cd-section">
+        <h2>时间线与CD指数分布</h2>
+        <div id="timeline"><h3>时间线 + 引用</h3></div>
+        <div id="index-sample"><h3>示例引用</h3></div>
+        <div id="index-trend"><h3>CD指数分布</h3></div>
+        <script src="js/CDindex.js"></script>
+      </div>
+    </main>
   </div>
 
-  <!-- 🟨 热力图 -->
-  <div class="container">
-    <h3>学科交叉热矩阵图</h3>
-    <div class="section-description2">
-      横纵轴为学科分类，颜色强度代表交叉频率。
-    </div>
-
-    <div class="control-row">
-      <label for="category">选择分类字段：</label>
-      <select id="category">
-        <option value="field">field</option>
-        <option value="domain">domain</option>
-      </select>
-    </div>
-
-    <div id="filter-box"></div>
-    <div class="svg-flexible-wrapper">
-      <svg id="heatmap" class="svg-flexible" width="1000" height="1600"></svg>
-    </div>
-    <script src="js/heat.js"></script>
-  </div>
-
-  <!-- 🟥 CD指数和时间线 -->
-  <div class="container">
-    <h2>时间线与CD指数分布</h2>
-
-    <div id="timeline">
-      <h3>时间线 + 引用</h3>
-    </div>
-
-    <div id="index-sample">
-      <h3>示例引用</h3>
-    </div>
-
-    <div id="index-trend">
-      <h3>CD指数分布</h3>
-    </div>
-
-    <script src="js/CDindex.js"></script>
-  </div>
-
-
-  <!-- 🔁 状态记忆控制 -->
+  <!-- 状态记忆控制 -->
   <script>
     const savedColor = localStorage.getItem("color-category");
-    if (savedColor) {
-      document.getElementById("colorCategory").value = savedColor;
-    }
+    if (savedColor) document.getElementById("colorCategory").value = savedColor;
 
     const savedCategory = localStorage.getItem("selected-category");
-    if (savedCategory) {
-      document.getElementById("category").value = savedCategory;
-    }
+    if (savedCategory) document.getElementById("category").value = savedCategory;
 
     document.getElementById("category").addEventListener("change", (e) => {
       localStorage.setItem("selected-category", e.target.value);
@@ -205,6 +236,5 @@
       location.reload();
     });
   </script>
-
 </body>
 </html>
