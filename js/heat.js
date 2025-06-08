@@ -7,6 +7,8 @@ document.getElementById("category-select")?.addEventListener("change", (e) => {
 console.log("heat.js loaded!");
 
 (function() {
+  const scaleFactor = 0.7; // 你可以试试 0.6, 0.8 等，直到合适
+
   const cellSize = 40;
   const margin = {top: 160, left: 150, right: 160, bottom: 160};
   const legendPadding = 100;
@@ -90,7 +92,8 @@ console.log("heat.js loaded!");
       .attr("height", height);
 
     const g = svg.append("g")
-      .attr("transform", `translate(${margin.left},${margin.top})`);
+      .attr("transform", `translate(${margin.left},${margin.top}) scale(${scaleFactor})`);
+
 
     const color = d3.scaleSequential()
       .domain([0, d3.max(fullData, d => d.value)])
