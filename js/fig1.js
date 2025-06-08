@@ -19,7 +19,7 @@ let currentColorField = localStorage.getItem("color-category") || "field";
 let topPercent = 10;
 
 Promise.all([
-  d3.csv("data/output_1w_merged.csv", d => {
+  d3.csv("data/nodes_cleaned.csv", d => {
     let field = "Unknown", domain = "Unknown";
     try {
       if (d.topics && d.topics.startsWith("[")) {
@@ -98,7 +98,7 @@ Promise.all([
 
     const simulation = d3.forceSimulation(nodes)
       .force("link", d3.forceLink(links).id(d => d.id).distance(60))
-      .force("charge", d3.forceManyBody().strength(-60))
+      .force("charge", d3.forceManyBody().strength(-100))
       .force("center", d3.forceCenter(width / 2, height / 2))
       .alphaDecay(0.1);
 
@@ -110,13 +110,17 @@ Promise.all([
       .data(links)
       .join("line");
 
+    const sizeScale = d3.scaleLog()
+      .domain([1, d3.max(nodesData, d => d.cited_by_count)])
+      .range([4, 24]);
+
     const node = container.append("g")
       .attr("stroke", "#999")
       .attr("stroke-width", 1)
       .selectAll("circle")
       .data(nodes)
       .join("circle")
-      .attr("r", d => 4 + Math.sqrt(d.cited_by_count || 1))
+      .attr("r", d => Math.sqrt(d.cited_by_count || 0))
       .attr("fill", d => color(d.colorKey))
       .attr("class", "node")
       .call(
@@ -156,18 +160,46 @@ Promise.all([
     }, 3000);
 
     function handleMouseOver(event, d) {
-      node.attr("fill", n =>
-        n.id === d.id ? d3.color(color(n.colorKey)).darker(1) : color(n.colorKey)
-      );
-      link.attr("stroke-width", l =>
-        l.source.id === d.id || l.target.id === d.id ? 2 : 1
-      );
+      // 找到与当前节点相连的所有节点和边
+      const neighborIds = new Set();
+      const connectedLinks = links.filter(l => {
+        const connected = l.source.id === d.id || l.target.id === d.id;
+        if (connected) {
+          neighborIds.add(l.source.id);
+          neighborIds.add(l.target.id);
+        }
+        return connected;
+      });
+
+      // 所有节点变暗，只有自己和邻居保留正常不透明度
+      node
+        .attr("fill-opacity", n => (neighborIds.has(n.id) ? 1 : 0.1))
+        .attr("stroke-opacity", n => (neighborIds.has(n.id) ? 1 : 0.1));
+
+      link
+        .attr("opacity", l => (
+          l.source.id === d.id || l.target.id === d.id ? 0.9 : 0.05
+        ))
+        .attr("stroke", l =>
+          l.source.id === d.id || l.target.id === d.id ? "#333" : "#aaa"
+        )
+        .attr("stroke-width", l =>
+          l.source.id === d.id || l.target.id === d.id ? 2 : 1
+        );
     }
 
     function handleMouseOut() {
-      node.attr("fill", d => color(d.colorKey));
-      link.attr("stroke-width", 1);
+      // 恢复默认样式
+      node
+        .attr("fill-opacity", 1)
+        .attr("stroke-opacity", 1);
+
+      link
+        .attr("opacity", 0.15)
+        .attr("stroke", "#aaa")
+        .attr("stroke-width", 1);
     }
+
 
     const legendDiv = d3.select("#legend-container");
     legendDiv.html("");

@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="zh">
+
 <head>
   <meta charset="UTF-8">
-  <title>引用网络与热力图可视化</title>
+  <title>引用网络与可视化分析</title>
   <script src="https://d3js.org/d3.v7.min.js"></script>
+  <link rel="stylesheet" href="css/style.css">
   <style>
     body {
       font-family: sans-serif;
@@ -21,6 +23,7 @@
       padding: 30px;
       border-radius: 8px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      margin-bottom: 40px;
     }
 
     .svg-fixed {
@@ -120,17 +123,14 @@
   </style>
 </head>
 <body>
-  <!-- 🔵 主体部分 -->
+
+  <!-- 🟦 力导向图 -->
   <div class="container">
     <h2>论文引用关系力导向图</h2>
     <div class="section-description1">
-      1. 中心密集、外围稀疏：经典“核心-边缘”结构
-        图的中央是一个高度紧密的簇群，聚集了许多大节点（高被引文献），它们构成了每个学科领域的知识核心。外围分布则更松散，节点较小，表示引用较少的论文，典型的“核心-边缘”模式。
-      2. 颜色分布
-        中间区域颜色交错密集，意味着这里存在跨学科的融合地带。尤其是深蓝（医学健康）与粉色（社会科学）在中部区域大量重叠，说明这两个领域在引文网络中存在密切联系。
-      3. “桥梁文献”：跨领域连接工作
-      在图中可以看到一些节点连接了不同颜色的区域，这些节点被称为“桥梁文献”，它们在不同学科之间起到了连接作用。比如，某些医学健康领域的研究可能引用了社会科学领域的文献，从而形成跨学科的知识网络。
-
+      1. 中心密集、外围稀疏：经典“核心-边缘”结构。<br>
+      2. 颜色分布：代表学科交叉情况。<br>
+      3. “桥梁文献”：起到跨领域连接作用。
     </div>
 
     <div class="control-row">
@@ -151,11 +151,13 @@
 
     <div id="legend-container"></div>
     <script src="js/fig1.js"></script>
+  </div>
 
+  <!-- 🟨 热力图 -->
+  <div class="container">
     <h3>学科交叉热矩阵图</h3>
     <div class="section-description2">
-      图中横纵轴为学科分类，颜色强度则代表两个学术领域的交叉频次。从热力图中我们可以看出有些学科之间有紧密的联系，其中具有代表性的是社会学和医学。而有些学科则与其他学科之间有比较高的壁垒，少有出现跨学科研究，比如医学领域。
-      todo：坐标轴高亮
+      横纵轴为学科分类，颜色强度代表交叉频率。
     </div>
 
     <div class="control-row">
@@ -166,19 +168,34 @@
       </select>
     </div>
 
-
     <div id="filter-box"></div>
     <div class="svg-flexible-wrapper">
       <svg id="heatmap" class="svg-flexible" width="1000" height="1000"></svg>
     </div>
     <script src="js/heat.js"></script>
   </div>
-        <div class ="section-description2">
-        TODO:引用数深度和广度的散点图，随时间的变化，用domain/field着色
-      </div>
+
+  <!-- 🟥 CD指数和时间线 -->
+  <div class="container">
+    <h2>时间线与CD指数分布</h2>
+
+    <div id="timeline">
+      <h3>时间线 + 引用</h3>
+    </div>
+
+    <div id="index-sample">
+      <h3>示例引用</h3>
+    </div>
+
+    <div id="index-trend">
+      <h3>CD指数分布</h3>
+    </div>
+
+    <script src="js/CDindex.js"></script>
+  </div>
 
 
-  <!-- 🟢 状态记忆控制 -->
+  <!-- 🔁 状态记忆控制 -->
   <script>
     const savedColor = localStorage.getItem("color-category");
     if (savedColor) {
@@ -200,6 +217,6 @@
       location.reload();
     });
   </script>
+
 </body>
 </html>
-
