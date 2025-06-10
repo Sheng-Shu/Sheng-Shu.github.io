@@ -31,3 +31,17 @@ svg {
   justify-content: center;  /* 👉 居中 SVG */
   padding-bottom: 20px;
 }
+
+.intro-paragraph {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 32px 60px;
+  font-size: 20px;
+  line-height: 1.8;
+  color: #0d2757;
+  text-align: center;
+  background-color: #ffffff;
+  border: 1px solid #d6e4f0;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}

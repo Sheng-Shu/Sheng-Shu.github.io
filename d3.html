@@ -31,14 +31,16 @@
     }
 
     .side-nav {
+      position: sticky;
+      top: 30px; /* 离页面顶部的固定距离，可根据视觉调整 */
       width: 18%;
-      padding: 60px 20px 30px 20px;  /* ⬅️ 加大顶部内边距 */
+      padding: 30px 30px 30px 30px;
       background-color: #f0f4f8;
       box-shadow: 2px 0 6px rgba(0, 0, 0, 0.05);
-      position: sticky;
-      top: 0;
-      height: 100vh;
+      align-self: flex-start; /* 避免它高度撑满整个 container */
     }
+
+
 
     .side-nav ul {
       list-style: none;
@@ -100,7 +102,7 @@
       margin-top: 20px;
       margin-bottom: 20px;
       flex-wrap: wrap;
-      font-size: 21px;
+      font-size: 18px;
     }
 
     select, input[type="range"], button {
@@ -111,7 +113,7 @@
     }
 
     #filter-box {
-      margin-bottom: 20px;
+      margin-bottom: 18px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -128,7 +130,7 @@
       max-width: 1200px;
       margin: 0 auto 0px;
       text-align: center;
-      font-size: 21px;
+      font-size: 18px;
       color: #555;
       line-height: 1.6;
       padding: 0 10px;
@@ -141,7 +143,7 @@
     }
 
     #legend-container span {
-      font-size: 18px;
+      font-size: 16px;
       margin-right: 16px;
       display: inline-flex;
       align-items: center;
@@ -166,6 +168,15 @@
   <header class="site-header">
     基于论文引用关系的学术发展过程
   </header>
+  <div class="intro-paragraph">
+    当前，学术发展是学者们都会关心的一个重要问题。通过研究学术发展过程，能够推动知识发展与学科进步、促进学术生态健康发展、指导科研实践和社会应用等。<br><br>
+    学术发展过程的演进轨迹能够通过论文引用关系得到深刻体现，这种体现尤其聚焦于<b>知识结构的多样性</b>和<b>创新模式的颠覆性</b>两个关键维度。<br>
+    从多样性角度看，引用网络中的跨学科引用比例、参考文献的学科离散度以及知识融合广度，共同构成了学术生态的多样性表征——当一篇论文能广泛吸收不同领域的知识，往往预示着更具突破性的研究成果。<br><br>
+    就颠覆性而言，通过 <b>CD 指数</b> 等量化工具可观察到：颠覆性研究会显著改变后续研究的引用模式（如后续文献更倾向于引用该研究本身而非其参考文献），这种引用行为的 "范式转移" 特征与渐进性研究形成鲜明对比。<br>
+    同时，在未知的知识被不断探索的情况下，论文的引用模式也会反映出颠覆性创新是否会越来越难。<br><br>
+    在这个可视化汇报中，我们将使用结合 OpenAlex 数据集，对以上因素进行探索。
+  </div>
+
 
   <div class="main-layout">
     <!-- 左侧导航 -->
