@@ -59,15 +59,14 @@ const customColors = [
 const color = d3.scaleOrdinal().range(customColors);
 
 let currentColorField = localStorage.getItem("color-category") || "field";
-let topPercent = 10;
+let topPercent = 1;
 
 Promise.all([
-  d3.csv("data/nodes_cleaned_1.csv", parseNode),
-  d3.csv("data/nodes_cleaned_2.csv", parseNode),
+  d3.csv("data/nodes_2w.csv", parseNode),
   d3.csv("data/edges_1.csv"),
   d3.csv("data/edges_2.csv")
-]).then(([nodes1, nodes2, edges1, edges2]) => {
-  const nodesData = [...nodes1, ...nodes2];
+]).then(([nodes1, edges1, edges2]) => {
+  const nodesData = [...nodes1];
   const linksData = [...edges1, ...edges2];
 
   console.log("Loaded edges:", nodesData.slice(0, 5));
@@ -186,15 +185,7 @@ Promise.all([
 
         // 高亮连接的点，非连接点降低透明度
         node
-          .attr("opacity", n =>
-            n.id === d.id ||
-            links.some(l =>
-              (l.source.id === d.id && l.target.id === n.id) ||
-              (l.target.id === d.id && l.source.id === n.id)
-            )
-              ? 1.0
-              : 0.2
-          );
+          .attr("opacity", 1);
 
         tooltip_force
           .style("display", "block")

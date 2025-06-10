@@ -14,7 +14,7 @@ nodes_df = nodes_df[nodes_df['id'].str.contains(r'W\d{5,}', na=False)]
 nodes_df['id'] = nodes_df['id'].apply(lambda x: x.split('/')[-1])
 
 # 随机采样
-sampled_nodes_df = nodes_df.sample(n=150000, replace=False)
+sampled_nodes_df = nodes_df.sample(n=50000, replace=False)
 sampled_ids = set(sampled_nodes_df['id'])
 
 # 安全写出 nodes
