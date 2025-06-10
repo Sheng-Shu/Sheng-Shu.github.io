@@ -31,9 +31,11 @@ console.log("heat.js loaded!");
   Promise.all([
     d3.csv("data/nodes_cleaned_1.csv", parseNode),
     d3.csv("data/nodes_cleaned_2.csv", parseNode),
-    d3.csv("data/edges.csv")
-  ]).then(([nodes1, nodes2, linksData]) => {
+    d3.csv("data/edges_1.csv"),
+    d3.csv("data/edges_2.csv")
+  ]).then(([nodes1, nodes2, edges1,edges2]) => {
     const nodesData = [...nodes1, ...nodes2];
+    const linksData = [...edges1, ...edges2];
     const selectedCategory = localStorage.getItem("selected-category") || "field";
 
     const nodefieldMap = new Map();
@@ -64,7 +66,7 @@ console.log("heat.js loaded!");
     const fullData = getHeatmapData(fieldArray, matrix);
 
     const width = fieldArray.length * cellSize + margin.left + margin.right + legendPadding;
-    const height = fieldArray.length * (cellSize+2) + margin.top + margin.bottom;
+    const height = fieldArray.length * (cellSize+5) + margin.top + margin.bottom;
     console.log("heatmap SVG height:", height);
 
 
