@@ -86,7 +86,7 @@
         const link = document.createElement('a');
         const url = URL.createObjectURL(blob);
         link.setAttribute('href', url);
-        link.setAttribute('download', 'papers_with_cd_index.csv');
+        link.setAttribute('download', 'output.csv');
         link.style.visibility = 'hidden';
         
         // 添加到文档并触发点击
@@ -98,7 +98,7 @@
     } */
 
     function loadPrecomputedData() {
-        d3.csv("data/papers_with_cd_index.csv").then(function(csv) {
+        d3.csv("data/output.csv").then(function(csv) {
             const papersWithCD = csv.map(paper => {
                 return {
                     id: paper.id,
