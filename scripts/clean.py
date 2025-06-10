@@ -1,7 +1,11 @@
 import pandas as pd
 
 # 读取原始 CSV 文件
+<<<<<<< HEAD
 input_path = "data/openalex-mena_dataset_merged.csv"
+=======
+input_path = "data/output_1w_merged.csv"
+>>>>>>> 0a81ba2e0abfa8bc95af9ebc62263c8026f89ad1
 df = pd.read_csv(input_path)
 
 # 保留的字段

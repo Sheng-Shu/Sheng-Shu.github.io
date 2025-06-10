@@ -28,6 +28,7 @@ if (tooltip_force.empty()) {
 // 确保它始终拥有 CSS 样式（而不是靠 JS 写 inline）
 tooltip_force.classed("tooltip_force", true); // 强制附着 class
 
+<<<<<<< HEAD
 function parseNode(d) {
   let field = "Unknown", domain = "Unknown";
   try {
@@ -49,6 +50,8 @@ function parseNode(d) {
   };
 }
 
+=======
+>>>>>>> 0a81ba2e0abfa8bc95af9ebc62263c8026f89ad1
 
 const customColors = [
   " #71b7ed", " #f2a7da", " #b8aeeb", " #88d8db", " #e66d50",
@@ -252,7 +255,11 @@ Promise.all([
           <span style="display:inline-block;width:16px;height:16px;
           border-radius:8px;background:${color(d)};
           border:1px solid #999;margin-right:6px;"></span>
+<<<<<<< HEAD
           <span style="font-size:18px;">${d}</span>`);
+=======
+          <span style="font-size:13px;">${d}</span>`);
+>>>>>>> 0a81ba2e0abfa8bc95af9ebc62263c8026f89ad1
     });
   }
 });
