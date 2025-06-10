@@ -28,6 +28,27 @@ if (tooltip_force.empty()) {
 // 确保它始终拥有 CSS 样式（而不是靠 JS 写 inline）
 tooltip_force.classed("tooltip_force", true); // 强制附着 class
 
+function parseNode(d) {
+  let field = "Unknown", domain = "Unknown";
+  try {
+    if (d.topics && d.topics.startsWith("[")) {
+      const jsonStr = d.topics.replace(/""/g, '"').replace(/^"|"$/g, '');
+      const arr = JSON.parse(jsonStr);
+      if (Array.isArray(arr) && arr.length > 0) {
+        field = arr[0].field || "Unknown";
+        domain = arr[0].domain || "Unknown";
+      }
+    }
+  } catch (e) {}
+  return {
+    id: d.id ? d.id.split('/').pop() : d.id,
+    title: d.title,
+    cited_by_count: isNaN(+d.cited_by_count) ? 0 : +d.cited_by_count,
+    field,
+    domain
+  };
+}
+
 
 const customColors = [
   " #71b7ed", " #f2a7da", " #b8aeeb", " #88d8db", " #e66d50",
@@ -41,28 +62,14 @@ let currentColorField = localStorage.getItem("color-category") || "field";
 let topPercent = 10;
 
 Promise.all([
-  d3.csv("data/nodes_cleaned.csv", d => {
-    let field = "Unknown", domain = "Unknown";
-    try {
-      if (d.topics && d.topics.startsWith("[")) {
-        const jsonStr = d.topics.replace(/""/g, '"').replace(/^"|"$/g, '');
-        const arr = JSON.parse(jsonStr);
-        if (Array.isArray(arr) && arr.length > 0) {
-          field = arr[0].field || "Unknown";
-          domain = arr[0].domain || "Unknown";
-        }
-      }
-    } catch (e) {}
-    return {
-      id: d.id ? d.id.split('/').pop() : d.id,
-      title: d.title,
-      cited_by_count: isNaN(+d.cited_by_count) ? 0 : +d.cited_by_count,
-      field,
-      domain
-    };
-  }),
-  d3.csv("data/edges.csv")
-]).then(([nodesData, linksData]) => {
+  d3.csv("data/nodes_cleaned_1.csv", parseNode),
+  d3.csv("data/nodes_cleaned_2.csv", parseNode),
+  d3.csv("data/edges_1.csv"),
+  d3.csv("data/edges_2.csv")
+]).then(([nodes1, nodes2, edges1, edges2]) => {
+  const nodesData = [...nodes1, ...nodes2];
+  const linksData = [...edges1, ...edges2];
+
   console.log("Loaded edges:", nodesData.slice(0, 5));
   renderGraph(topPercent);
 
