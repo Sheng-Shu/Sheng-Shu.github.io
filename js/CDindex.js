@@ -193,7 +193,6 @@
                 tooltip_cd.html(`<strong>${d.title}</strong><br>
                             发表年份: ${d.year}<br>
                             CD指数: ${d.cdIndex.toFixed(3)}<br>
-                            被引用量: ${d.cited_by_count}<br>
                             仅引用本论文: ${d.cdData.ns}<br>
                             同时引用本论文及至少一篇本论文的参考文献: ${d.cdData.np}`)
                     .style("left", (event.pageX + 10) + "px")
