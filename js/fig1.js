@@ -63,6 +63,7 @@ Promise.all([
   }),
   d3.csv("data/edges.csv")
 ]).then(([nodesData, linksData]) => {
+  console.log("Loaded edges:", nodesData.slice(0, 5));
   renderGraph(topPercent);
 
   d3.select("#nodePercent").on("input", function () {
@@ -244,7 +245,7 @@ Promise.all([
           <span style="display:inline-block;width:16px;height:16px;
           border-radius:8px;background:${color(d)};
           border:1px solid #999;margin-right:6px;"></span>
-          <span style="font-size:13px;">${d}</span>`);
+          <span style="font-size:18px;">${d}</span>`);
     });
   }
 });

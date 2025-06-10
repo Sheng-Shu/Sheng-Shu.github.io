@@ -1,7 +1,7 @@
 import pandas as pd
 
 # 读取原始 CSV 文件
-input_path = "data/output_1w_merged.csv"
+input_path = "data/openalex-mena_dataset_merged.csv"
 df = pd.read_csv(input_path)
 
 # 保留的字段

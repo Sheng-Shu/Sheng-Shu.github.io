@@ -17,11 +17,11 @@
     }
 
     .site-header {
-      background-color: #002b45;
+      background-color: #17608e;
       color: white;
-      padding: 20px;
+      padding: 60px;
       text-align: center;
-      font-size: 24px;
+      font-size: 42px;
       font-weight: bold;
     }
 
@@ -32,7 +32,7 @@
 
     .side-nav {
       width: 18%;
-      padding: 30px 20px;
+      padding: 60px 20px 30px 20px;  /* ⬅️ 加大顶部内边距 */
       background-color: #f0f4f8;
       box-shadow: 2px 0 6px rgba(0, 0, 0, 0.05);
       position: sticky;
@@ -46,13 +46,13 @@
     }
 
     .side-nav li {
-      margin-bottom: 16px;
+      margin-bottom: 26px;
     }
 
     .side-nav a {
       text-decoration: none;
-      font-size: 16px;
-      color: #336699;
+      font-size: 23px;
+      color: #0c3c6b;
     }
 
     .side-nav a:hover {
@@ -100,10 +100,11 @@
       margin-top: 20px;
       margin-bottom: 20px;
       flex-wrap: wrap;
+      font-size: 21px;
     }
 
     select, input[type="range"], button {
-      font-size: 14px;
+      font-size: 16px;
       padding: 6px 10px;
       border-radius: 4px;
       border: 1px solid #ccc;
@@ -124,10 +125,10 @@
     }
 
     .section-description1, .section-description2 {
-      max-width: 800px;
-      margin: 0 auto 20px;
+      max-width: 1200px;
+      margin: 0 auto 0px;
       text-align: center;
-      font-size: 15px;
+      font-size: 21px;
       color: #555;
       line-height: 1.6;
       padding: 0 10px;
@@ -136,11 +137,24 @@
     #legend-container {
       text-align: center;
       margin: 20px 0;
+      font-size: 16px;
+    }
+
+    #legend-container span {
+      font-size: 18px;
+      margin-right: 16px;
+      display: inline-flex;
+      align-items: center;
     }
 
     h1, h2, h3 {
       text-align: center;
       color: #222;
+    
+    }
+
+    h2 {
+      font-size: 35px; /* 比如设置为22px，可根据喜好调整 */
     }
 
     .node {
@@ -150,37 +164,40 @@
 </head>
 <body>
   <header class="site-header">
-    引用网络与可视化分析
+    基于论文引用关系的学术发展过程
   </header>
 
   <div class="main-layout">
     <!-- 左侧导航 -->
     <nav class="side-nav">
       <ul>
-        <li><a href="#network-section">📘 力导向图</a></li>
-        <li><a href="#heatmap-section">📗 热力图</a></li>
-        <li><a href="#cd-section">📙 时间线与CD指数</a></li>
+        <li><a href="#network-section"> 论文的引用关系 </a></li>
+        <li><a href="#heatmap-section"> 论文的引用学科多样性 </a></li>
+        <li><a href="#cd-section"> 时间线与CD指数</a></li>
       </ul>
     </nav>
 
     <!-- 右侧内容 -->
     <main class="content-area">
-      <!-- 力导向图 -->
+      <!-- 论文的引用关系 -->
       <div class="container" id="network-section">
-        <h2>论文引用关系力导向图</h2>
+        <h2>论文的引用关系</h2>
         <div class="section-description1">
-          1. 中心密集、外围稀疏：经典“核心-边缘”结构。<br>
-          2. 颜色分布：代表学科交叉情况。<br>
-          3. “桥梁文献”：起到跨领域连接作用。
+          本图基于论文之间的引用关系构建力导向网络图。<br>
+          图中每个节点代表一篇论文，边表示引用关系，节点颜色代表学科分类（如 field 或 domain）。<br>
+          中心区域聚集了高被引论文，构成<b>核心-边缘</b>结构，是学术领域中的核心知识。<br>
+          图中还可见连接不同颜色簇群的<b>桥梁文献</b>，它们跨越学科界限，促进知识交叉传播。<br>
+          局部簇群对应具体的研究问题。<br>
+          通过调节下方滑块和分类选项，可观察不同引用强度与学科分类下的网络结构变化。<br>
         </div>
         <div class="control-row">
-          显示前 
+          显示被引用量前 
           <input id="nodePercent" type="range" min="1" max="100" value="10">
           <span id="percentLabel">10%</span> 节点
         </div>
         <svg id="network" class="svg-fixed" width="1000" height="600"></svg>
         <div class="control-row">
-          <label for="colorCategory">颜色分类字段：</label>
+          <label for="colorCategory">选择分类字段：</label>
           <select id="colorCategory">
             <option value="field">field</option>
             <option value="domain">domain</option>
@@ -194,7 +211,12 @@
       <div class="container" id="heatmap-section">
         <h2>学科交叉热矩阵图</h2>
         <div class="section-description2">
-          横纵轴为学科分类，颜色强度代表交叉频率。
+          本图展示不同学科间的交叉引用频次，横纵轴为学科分类，颜色强度代表交叉频率。<br>
+          热力图揭示出某些学科之间存在显著的合作关系。例如，<b>社会科学</b>与<b>医学</b>之间的交叉引用频繁，体现了对社会健康议题的高度关注。<br>
+          相比之下，<b>化学工程</b>、<b>兽医学</b>等学科的交叉频次较低，显示出其研究更具独立性，跨学科合作相对较少。<br>
+          此外，热图还反映出<b>引用方向性</b>：例如，<b>健康科学</b>大量引用<b>生命科学</b>的研究成果，表明其依赖基础研究来指导应用实践。<br>
+          通过下方筛选框，探索特定领域间的交叉结构。
+
         </div>
         <div class="control-row">
           <label for="category">选择分类字段：</label>
