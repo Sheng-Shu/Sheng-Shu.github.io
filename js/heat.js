@@ -29,36 +29,11 @@ console.log("heat.js loaded!");
 
 
   Promise.all([
-<<<<<<< HEAD
     d3.csv("data/nodes_cleaned_1.csv", parseNode),
     d3.csv("data/nodes_cleaned_2.csv", parseNode),
     d3.csv("data/edges.csv")
   ]).then(([nodes1, nodes2, linksData]) => {
     const nodesData = [...nodes1, ...nodes2];
-=======
-    d3.csv("data/nodes_cleaned.csv", d => {
-      let field = "Unknown", domain = "Unknown";
-      try {
-        if (d.topics && d.topics.startsWith("[")) {
-          const jsonStr = d.topics.replace(/""/g, '"').replace(/^"|"$/g, '');
-          const arr = JSON.parse(jsonStr);
-          if (Array.isArray(arr) && arr.length > 0) {
-            field = arr[0].field || "Unknown";
-            domain = arr[0].domain || "Unknown";
-          }
-        }
-      } catch (e) {}
-      let shortId = d.id ? d.id.split('/').pop() : d.id;
-      return {
-        ...d,
-        id: shortId,
-        field,
-        domain
-      };
-    }),
-    d3.csv("data/edges.csv")
-  ]).then(([nodesData, linksData]) => {
->>>>>>> 0a81ba2e0abfa8bc95af9ebc62263c8026f89ad1
     const selectedCategory = localStorage.getItem("selected-category") || "field";
 
     const nodefieldMap = new Map();
@@ -70,11 +45,6 @@ console.log("heat.js loaded!");
       new Set(nodesData.map(d => d[selectedCategory]).filter(x => x && x !== "Unknown"))
     ).sort();
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 0a81ba2e0abfa8bc95af9ebc62263c8026f89ad1
     const matrix = {};
     fieldArray.forEach(row => {
       matrix[row] = {};
