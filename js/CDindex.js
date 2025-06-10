@@ -86,7 +86,7 @@
         const link = document.createElement('a');
         const url = URL.createObjectURL(blob);
         link.setAttribute('href', url);
-        link.setAttribute('download', 'papers_with_cd_index.csv');
+        link.setAttribute('download', 'output.csv');
         link.style.visibility = 'hidden';
         
         // 添加到文档并触发点击
@@ -98,7 +98,7 @@
     } */
 
     function loadPrecomputedData() {
-        d3.csv("data/papers_with_cd_index.csv").then(function(csv) {
+        d3.csv("data/output.csv").then(function(csv) {
             const papersWithCD = csv.map(paper => {
                 return {
                     id: paper.id,
@@ -193,9 +193,9 @@
                 tooltip_cd.html(`<strong>${d.title}</strong><br>
                             发表年份: ${d.year}<br>
                             CD指数: ${d.cdIndex.toFixed(3)}<br>
-                            被引用量: ${d.cited_by_count}<br>
-                            仅引用本论文: ${d.cdData.ns}<br>
-                            同时引用本论文及至少一篇本论文的参考文献: ${d.cdData.np}`)
+                            被引用量(来自原始数据): ${d.cited_by_count}<br>
+                            仅引用本论文(来自截取数据集): ${d.cdData.ns}<br>
+                            同时引用本论文及至少一篇本论文的参考文献(来自截取数据集): ${d.cdData.np}`)
                     .style("left", (event.pageX + 10) + "px")
                     .style("top", (event.pageY - 28) + "px");
             })
