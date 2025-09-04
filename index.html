@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="description" content="LiveLongBench" />
+  <meta name="keywords" content="LiveCodeBench" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>
+    LiveLongBench
+  </title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || []
+
+      function gtag() {
+        dataLayer.push(arguments)
+      }
+
+      gtag("js", new Date())
+
+      gtag("config", "G-PYVRSFMDRL")
+    </script> -->
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./css/bulma.min.css" />
+  <link rel="stylesheet" href="./css/bulma-carousel.min.css" />
+  <link rel="stylesheet" href="./css/bulma-slider.min.css" />
+  <link rel="stylesheet" href="./css/fontawesome.all.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" />
+  <link rel="stylesheet" href="./css/index.css" />
+  <link rel="icon" href="./images/favicon.svg" />
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./js/fontawesome.all.min.js"></script>
+  <script src="./js/bulma-carousel.min.js"></script>
+  <script src="./js/bulma-slider.min.js"></script>
+  <script src="./js/index.js"></script>
+
+  <style>
+    /* Navigation Header */
+    .main-nav {
+      background: #ffffff !important;
+      border-bottom: 1px solid #e2e8f0 !important;
+      padding: 1rem 0 !important;
+      position: sticky !important;
+      top: 0 !important;
+      z-index: 1000 !important;
+      box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1) !important;
+    }
+
+    .nav-container {
+      max-width: 1200px !important;
+      margin: 0 auto !important;
+      padding: 0 2rem !important;
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+    }
+
+    .nav-brand {
+      font-family: Inter, sans-serif !important;
+      font-size: 1.75rem !important;
+      font-weight: 700 !important;
+      color: #0f172a !important;
+      text-decoration: none !important;
+    }
+
+    .nav-links {
+      display: flex !important;
+      gap: 2rem !important;
+      align-items: center !important;
+    }
+
+    .nav-link {
+      font-family: Inter, sans-serif !important;
+      font-size: 1.125rem !important;
+      font-weight: 500 !important;
+      color: #64748b !important;
+      text-decoration: none !important;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .nav-link:hover {
+      color: #2563eb !important;
+      background: #f1f5f9;
+    }
+
+    .nav-link.active {
+      color: #2563eb !important;
+      background: #eff6ff;
+      font-weight: 600 !important;
+    }
+
+    .nav-new-badge {
+      display: inline-flex;
+      align-items: center;
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      color: white !important;
+      padding: 0.25rem 0.625rem;
+      border-radius: 9999px;
+      font-size: 0.75rem !important;
+      font-weight: 700 !important;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-left: 0.5rem;
+      box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.05);
+      }
+    }
+
+    /* Enhanced body and content font sizes */
+    body {
+      font-family: Inter, sans-serif !important;
+      font-size: 18px !important;
+    }
+
+    .title.is-1.publication-title {
+      font-family: Inter, sans-serif !important;
+      font-size: 3rem !important;
+      font-weight: 700 !important;
+      line-height: 1.2 !important;
+      letter-spacing: -0.025em !important;
+    }
+
+    .title.is-3 {
+      font-family: Inter, sans-serif !important;
+      font-size: 2rem !important;
+      font-weight: 600 !important;
+    }
+
+    .is-size-5.publication-authors {
+      font-family: Inter, sans-serif !important;
+      font-size: 1.125rem !important;
+      font-weight: 500 !important;
+    }
+
+    .subtitle {
+      font-family: Inter, sans-serif !important;
+      font-size: 1.25rem !important;
+      font-weight: 500 !important;
+      line-height: 1.6 !important;
+    }
+
+    .content p {
+      font-family: Inter, sans-serif !important;
+      font-size: 1.125rem !important;
+      line-height: 1.7 !important;
+    }
+
+    .button {
+      font-family: Inter, sans-serif !important;
+      font-size: 1rem !important;
+      font-weight: 500 !important;
+    }
+
+    /* Mobile responsive */
+    @media (max-width: 768px) {
+      body {
+        font-size: 16px !important;
+      }
+
+      .nav-container {
+        padding: 0 1rem;
+      }
+
+      .nav-links {
+        gap: 1rem;
+      }
+
+      .nav-link {
+        font-size: 1rem !important;
+        padding: 0.5rem 0.75rem;
+      }
+
+      .nav-brand {
+        font-size: 1.5rem !important;
+      }
+
+      .title.is-1.publication-title {
+        font-size: 2.25rem !important;
+      }
+
+      .title.is-3 {
+        font-size: 1.75rem !important;
+      }
+
+      .is-size-5.publication-authors {
+        font-size: 1rem !important;
+      }
+
+      .subtitle {
+        font-size: 1.125rem !important;
+      }
+
+      .content p {
+        font-size: 1rem !important;
+      }
+
+      .button {
+        font-size: 0.875rem !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navigation Header -->
+  <nav class="main-nav">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand">LiveCodeBench</a>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link active">Overview</a>
+        <a href="leaderboard.html" class="nav-link">Leaderboard</a>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+    <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">
+              LiveLongBench
+            </h1>
+            
+            <div class="is-size-5 publication-authors"> <!-- author -->
+
+              <span class="author-block">
+                <a href="homepage">Author</a><sup>1</sup>,</span>
+              </div>
+
+            <div class="is-size-5 publication-authors"> <!-- affiliation -->
+              <span class="author-block"><sup>1</sup>Affiliation</span>
+            </div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <!-- PDF Link. -->
+                <span class="link-block">
+                  <a href="https://arxiv.org/abs/2505.16475" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </span>
+                    <span>Paper</span>
+                  </a>
+                </span>
+                <!--Code Link-->
+                <span class="link-block">
+                  <a href="https://github.com/bigai-nlco/ReflectEvo"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                  </a>
+                </span>
+                <!-- Dataset Link. -->
+                <span class="link-block">
+                  <a href="https://huggingface.co/datasets/bigai-nlco/ReflectionEvo"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="far fa-images"></i>
+                    </span>
+                    <span>Data</span>
+                  </a>
+                </span>
+                <!-- Leaderboard Link. -->
+                <span class="link-block">
+                  <a href="leaderboard.html" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fa fa-trophy"></i>
+                    </span>
+                    <span>Leaderboard</span>
+                  </a>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <!-- Abstract. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Introduction</h2>
+          <div class="content has-text-justified">
+            <p>
+            </p>
+          </div>
+        </div>
+      </div>
+      <!--/ Abstract. -->
+    </div>
+  </section>
+
+   <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Submitting Custom Models</h2>
+          <div class="content has-text-justified">
+            <p>
+              To submit models you can create a pull request on our <a
+                href="https://github.com/bigai-nlco/ReflectEvo">Github</a>. Particularly, you can copy your model
+              generations folder from `output` to the `submissions` folder and create a pull request. We will review the
+              submission and add the model to the leaderboard accordingly.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code></code></pre>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+             
+            </p>
+            <p>
+              The source code from this website is borrowed from <a
+                href="https://github.com/nerfies/nerfies.github.io">this template</a>!
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>
